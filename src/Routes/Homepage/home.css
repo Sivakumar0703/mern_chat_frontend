@@ -1,0 +1,158 @@
+
+
+/* #e0f2f1 - light
+   #009688 -dark
+   #152238 - conatiner */
+
+.container .nav .nav-link{
+    color:#e0f2f1;
+    background-color: #009688 ;
+}
+
+.container .nav .active{
+    background-color: #152238;
+    color: #009688;
+    border-bottom: 1px solid #009688;
+}
+
+.tab-content .tab-pane{
+    background-color: #152238 ;
+    color :#e0f2f1 ;
+}
+
+.card-body{
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0 !important;   
+}
+
+.container{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+#signup-img-container{
+    display:none;
+    margin: 15px;
+    margin-bottom: 10px;
+  }
+
+@media (min-width: 768px) { 
+    #signup-img-container{
+      visibility:visible;
+      display: block;
+    }
+ }
+
+.signup-error-msg{
+    margin-bottom: 0 !important;
+}
+
+.hidden-msg{
+    visibility: hidden;
+}
+
+.my-home-page{
+    box-sizing: border-box;
+}
+
+.image-container{
+    display: flex;
+    justify-content: center;
+}
+
+.signup-image-container img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+
+.circle-image{
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    width:150px;
+    height:150px;
+}
+
+.circle-image  img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+
+.login-button{
+ width:150px;
+}
+
+.password-icon:hover{
+    cursor: pointer;
+}
+
+.custom-input{
+    box-shadow: none !important;
+    border:3px solid #e0f2f1 !important;
+    color: #009688 !important ;
+    font-weight: bold;
+}
+
+.custom-input:focus{
+    border: 3px solid #009688 !important;
+}
+
+.my-home-page{
+    background-image: url(../../images//chat_login_bg.jpg);
+    object-fit: cover;
+    height:100vh;
+    overflow: scroll;
+}
+
+.chat-title{
+    font-weight: bold;
+    background: rgb(2,0,36);
+background: linear-gradient(80deg, rgba(2,0,36,1) 0%, rgba(0,150,136,1) 100%);
+
+}
+
+.heading{
+    margin: 0 !important;
+    padding: 5px 0;
+    color:#e0f2f1;
+}
+
+/* to keep the tab height contact while switching over */
+.tab-content {
+    display: flex;
+  }
+  
+  .tab-content > .tab-pane {
+    display: block; /* undo "display: none;" */
+    visibility: hidden;
+    margin-right: -100%;
+    width: 100%;
+  }
+  
+  .tab-content > .active {
+    visibility: visible;
+  }
+
+  #loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* hiding scroll bar */
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .my-home-page::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .my-home-page {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
