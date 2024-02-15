@@ -54,7 +54,7 @@ const Signup = () => {
       onSubmit: async(newuser,{resetForm}) => {
         setIsDisabled((prev)=>!prev)
         await handleImage(newuser)
-        console.log(newuser);
+        // console.log(newuser);
         resetForm({newuser : " "})
       },
     });
@@ -76,10 +76,12 @@ async function uploadImage(timestamp,signature){
      const res = await axios.post(url , data);
      const {secure_url} = res.data;
      console.log('bingooo..',secure_url)
-     setImgUrl(secure_url)
-     setIsDisabled((prev) => !prev)
+     setImgUrl(()=>secure_url)
+     console.log('from destructure',imgUrl)
   } catch (error) {
       console.log('ERROR IN UPLOADING IMAGE',error)
+      setIsDisabled((prev) => !prev)
+      input_field.value="";
   }
 }
 
@@ -101,11 +103,15 @@ const handleImage = async(newuser) =>{
   try {
       setLoading(true)
       const {timestamp , signature} = await getSignature('images')
-      console.log(timestamp,signature)
+        console.log(timestamp,signature)
       await uploadImage(timestamp , signature);
       signUp(newuser)
   } catch (error) {
       console.log('error',error)
+      toast.error('registration failed')
+        toast.info('please try again')
+        input_field.value="";
+        setIsDisabled((prev) => !prev)
       setLoading(false)
   }
 }
@@ -113,6 +119,7 @@ const handleImage = async(newuser) =>{
     // register user in DB
     async function signUp(user){
       try {
+        console.log('image link' , imgUrl)
         await axios.post('http://localhost:5000/api/register-user',{
           name:user.userName,
           email:user.email,
@@ -128,14 +135,22 @@ const handleImage = async(newuser) =>{
           values.password = ''
           values.confirmPassword = ''
           input_field.value="";
+          console.log('input field value',input_field.value)
         })
-        .catch(err => console.log('err',err))
+        .catch(err => {
+          console.log('err',err)
+          input_field.value="";
+        })
         
         setLoading(false)
-        
+        setIsDisabled((prev) => !prev)
         
       } catch (error) {
         console.log(error)
+        toast.error('registration failed')
+        toast.info('please try again')
+        input_field.value="";
+        setIsDisabled((prev) => !prev)
         setLoading(false)
       }
     }
