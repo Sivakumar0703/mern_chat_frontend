@@ -1,0 +1,44 @@
+/* #chat-body */
+/* #my-chat  #chat-box */
+
+.chat-body{
+    background-color: hotpink;
+    /* height:90vh; */
+    margin: 10px;
+    height:calc(100vh - 10vh - 20px);
+}
+
+.my-chats{
+    background-color: burlywood;
+    display: none;
+    border-radius: 8px;
+}
+
+
+.chat-box{
+    background-color: cadetblue;
+    display: none;
+    /* changes */
+    /* gap:'10px'; */
+    /* margin: 15px; */
+}
+
+#back-button{
+    display: block;
+}
+
+/* min & >min */
+@media (min-width: 768px) { 
+    #back-button{
+        display: none;
+    }
+
+    .my-chats , .chat-box{
+        display: inline-block;
+    }
+
+ }
+
+ .activate-block{
+    display: block;
+ }

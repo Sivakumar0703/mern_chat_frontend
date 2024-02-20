@@ -8,4 +8,24 @@
 }
 
 
+/* one-one chat */
+.current-chat-header{
+    height:50px;
+    background-color: brown;
+}
 
+.chat-person-name {
+    font-size: 25px;
+    font-weight: bold;
+    color:yellow;
+}
+
+.go-back-btn{
+    display: inline-block;
+}
+
+@media (min-width: 768px) { 
+    .go-back-btn{
+        display: inline-block;
+    }
+ }

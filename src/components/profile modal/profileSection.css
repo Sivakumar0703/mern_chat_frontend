@@ -1,0 +1,29 @@
+
+.profile-image-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-area{
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    width:150px;
+    height:150px;
+}
+
+.my-image {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+
+.remove-badge{
+    cursor: pointer;
+    background-color: green;
+}
+
+.remove-badge:hover{
+    background-color: red;
+}

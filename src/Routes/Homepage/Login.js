@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../images/chat-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [view, setView] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if(user){
+      navigate('/chat')
+    }
+  },[navigate])
 
   const handleClick = () => {
     setView((prev) => !prev);
@@ -21,11 +30,13 @@ const Login = () => {
         email,
         password,
       };
-       await axios.post("http://localhost:5000/api/login", data)
+       await axios.post("http://localhost:5000/api/user/login", data)
         .then((res) => {
           toast(res.data.message);
           // setEmail("")
           // setPassword("")
+          localStorage.setItem("user",JSON.stringify(res.data.userObj));
+          console.log(res.data)
         });
     } catch (error) {
       console.log("error", error);

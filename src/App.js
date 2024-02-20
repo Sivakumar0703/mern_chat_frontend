@@ -1,6 +1,7 @@
 import {Routes,Route} from 'react-router-dom'
 import './App.css';
 import Home from './Routes/Homepage/Home';
+import ChatPage from './Routes/ChatPage';
 
 
 
@@ -10,7 +11,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path='/' element={<Home />} />
-        {/* <Route path='/image' element={<Secured />} /> */}
+        <Route path='/chat' element={<ChatPage />} />
       </Routes>
      
      
