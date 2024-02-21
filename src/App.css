@@ -29,3 +29,21 @@
         display: inline-block;
     }
  }
+
+ /* .chat-display{
+    height:calc(100vh - 10vh - 70px);
+    background-color: darkgoldenrod;
+    position: relative;
+ } */
+
+ /* .chat-input{
+    position:absolute;
+    bottom: 5px;
+    margin: 15px;
+    background-color: darkgreen;
+    width:96%;
+ }
+
+ .chat-input input {
+    width:100%;
+ } */

@@ -7,7 +7,7 @@ import { chatContext } from "../context/ChatContext"
 const SkeletonLoading = () => {
     return(
             <div className='card mb-2'>
-                <div className='card-body row'>
+                <div className='card-body-1 row'>
                     <div  className='loadingImage skeleton col-4'> </div>
                     <div className="profile-name col-8">
                       <div className="skeleton skeleton-text"> </div>
@@ -23,7 +23,7 @@ export const SearchResult = ({user , handleChat}) => {
   console.log('handle chat fn from offcanvas user',handleChat)
     return(
             <div className='card mb-2' onClick={handleChat} style={{cursor: 'pointer'}}>
-                <div className='card-body row'>
+                <div className='card-body-1 row'>
                     <div className='loadingRealImage col-4'> 
                     <span className='search-result-img-conatiner'>
                     <img className='search-result-profile-img' src={user.image} alt="profile-picture" />
@@ -42,7 +42,7 @@ export const SearchResult = ({user , handleChat}) => {
 const Offcanvas = ({nameList}) => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"))
     const {user , setSelectedChat , chats , setChats , selectedChat} = useContext(chatContext)
-    console.log('search result',nameList)
+    
 
     async function startChat (id){
         try {
@@ -56,7 +56,7 @@ const Offcanvas = ({nameList}) => {
                 setChats([chatData.data,...chats])
            }
            setSelectedChat(chatData.data)
-           console.log('selected chat',selectedChat)
+          //  console.log('selected chat',selectedChat)
         } catch (error) {
             console.log('error in start chat function',error);
         }

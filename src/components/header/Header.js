@@ -27,7 +27,7 @@ const Header = () => {
           },
         }
       );
-      console.log(result.data.users);
+      // console.log(result.data.users);
       setNameList(result.data.users);
     } catch (error) {
       console.log("error in searching friends", error);

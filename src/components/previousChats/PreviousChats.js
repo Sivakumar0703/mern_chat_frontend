@@ -30,16 +30,16 @@ const PreviousChats = ({box1,box2}) => {
     }
 
      function getSenderName(loggedInUser , friend){
-        if(friend[0]._id === loggedInUser._id){
-            console.log('created chat- sender name',friend ,friend[1].name,friend[0].name )
-            console.log('sender',friend[1].name)
-        }
+        // if(friend[0]._id === loggedInUser._id){
+        //     console.log('created chat- sender name',friend ,friend[1].name,friend[0].name )
+        //     console.log('sender',friend[1].name)
+        // }
         
         return friend[0]._id === loggedInUser._id ? friend[1].name : friend[0].name
     }
 
     useEffect(()=>{
-        console.log('rename success in my chat list - previous chat component')
+        // console.log('rename success in my chat list - previous chat component')
             fetchChats()
     },[getChatData])
 
@@ -71,11 +71,11 @@ const PreviousChats = ({box1,box2}) => {
     {/* <div className='friends-list row' style={{overflowY:'scroll'}}> */}
     <div className='friends-list row'>
         <div className='col'>
-            {console.log('chat to render frnd list' , chats)}
+            {/* {console.log('chat to render frnd list' , chats)} */}
             {
                 chats ? (
                     chats.map((cht)=>{
-                        console.log('what i get' , cht)
+                        // console.log('what i get' , cht)
                       return  <div 
                       key={cht._id}
                       onClick={()=>{

@@ -28,7 +28,7 @@ const CreateGroup = ({children}) => {
                 })
                 setLoading(false)
                 setSearchResult(result.data.users)
-                console.log(result.data.users)
+                // console.log(result.data.users)
             } catch (error) {
                console.log('error in fetching search result',error);
                setLoading(false) 
@@ -53,9 +53,9 @@ const CreateGroup = ({children}) => {
           Authorization : `Bearer ${user.token}`
         }
        })
-       console.log('forming froup', result)
-       console.log('older chats',chats)
-      //  setChats([result.data.fullChat , ...chats])
+      //  console.log('forming froup', result)
+      //  console.log('older chats',chats)
+       setChats([result.data.fullChat , ...chats])
      } catch (error) {
       console.log('error in group submission',error)
      }
@@ -64,7 +64,7 @@ const CreateGroup = ({children}) => {
 
     // adding group members
     function handleCreateGroup(user){
-      console.log('add user fn called',user)
+      // console.log('add user fn called',user)
         if(selectedUsers.includes(user)){
           return  alert('user already added')
         }
@@ -73,7 +73,7 @@ const CreateGroup = ({children}) => {
 
     // removing selected user
     function handleRemove(member){
-        console.log('handle remove user function called')
+        // console.log('handle remove user function called')
         setSelectedUsers(selectedUsers.filter((selected) => selected._id !== member._id))
     }
 
@@ -101,7 +101,7 @@ const CreateGroup = ({children}) => {
          </div>
          {/* selected users */}
          <div style={{display:'flex',flexWrap:'wrap'}}>
-            {console.log('selected users',selectedUsers)}
+            {/* {console.log('selected users',selectedUsers)} */}
             { 
                 selectedUsers.map((member)=>{
                     return <SelectedUserBadge key={member._id} user={member} handleFunction={()=>handleRemove(member)} />

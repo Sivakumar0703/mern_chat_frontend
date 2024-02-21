@@ -22,7 +22,7 @@
 // we haven't set the group chat profile image
 
   const SearchResultComponent = ({user , handleFunction}) => {
-    console.log('handle chat fn from add user',handleFunction)
+    // console.log('handle chat fn from add user',handleFunction)
       return(
               <div className='card mb-2' onClick={handleFunction} style={{cursor: 'pointer'}}>
                   <div className='card-body row'>

@@ -8,7 +8,7 @@ import {CircleLoader} from 'react-spinners'
 import { SearchResult } from "../header/Offcanvas";
 // import SearchResultComponent from "../previousChats/SearchList";
 
-const ShowProfile = ({ children }) => {
+const ShowProfile = ({ children , setAllMsg }) => {
   const {user, selectedChat, setSelectedChat , setGetChatData} = useContext(chatContext);
   const[isEditable , setIsEditable] = useState(false);
   const[updateGroupName , setUpdateGroupName] = useState("");
@@ -79,7 +79,7 @@ const ShowProfile = ({ children }) => {
             Authorization : `Bearer ${user.token}`
           }
         } )
-        console.log('after adding new member',result.data.groupChat)
+        // console.log('after adding new member',result.data.groupChat)
         setSelectedChat(result.data.groupChat)
         setAddMember()
        } catch (error) {
@@ -111,13 +111,32 @@ const ShowProfile = ({ children }) => {
       })
       alert(`${removeMember.name} is removed from this group`)
       setSelectedChat(result.data.afterRemoved)
+      getEntireChat(); // from current chat => load all msg
     } catch (error) {
       console.log('error in removing group member',error)
     }
   }
 
+      // get entire chat
+      async function getEntireChat(){
+        if(!selectedChat){
+          return;
+        }
+        try {
+          const result = await axios.get(`http://localhost:5000/api/msg/${selectedChat._id}`,{
+            headers : {
+              Authorization : `Bearer ${user.token}`
+            }
+          })
+
+          setAllMsg(result.data.msg)
+        } catch (error) {
+          console.log('error in fetching entire chat',error)
+        }
+    }
+
   return (
-    <div>
+    <div className="d-inline-block">
       {/* Button trigger modal */}
       <span
         type="button"
@@ -224,7 +243,7 @@ const ShowProfile = ({ children }) => {
               }
                 <br />
               {/* add new members */}
-              {console.log('🚀')}
+              {/* {console.log('🚀')} */}
               {
                 selectedChat?.admin?._id === user?._id ? 
                 (<>
