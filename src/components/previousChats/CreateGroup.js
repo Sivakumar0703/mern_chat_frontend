@@ -14,7 +14,9 @@ const CreateGroup = ({children}) => {
     const[groupName , setGroupName] = useState('');
     const[selectedUsers , setSelectedUsers] = useState([]);
     const[loading , setLoading] = useState(false);
-    const {user,chats,setChats} =  useContext(chatContext);
+    const {user,chats,setChats,setSelectedChat,setGetChatData} =  useContext(chatContext);
+    const box1 = document.getElementById("box-1")
+    const box2 = document.getElementById("box-2")
 
     // finding friends
     async function handleSearch(searchText){
@@ -54,8 +56,14 @@ const CreateGroup = ({children}) => {
         }
        })
       //  console.log('forming froup', result)
-      //  console.log('older chats',chats)
+       console.log('older chats',result.data.fullChat)
        setChats([result.data.fullChat , ...chats])
+        setSelectedChat(result.data.fullChat);
+        localStorage.setItem("selectedUser",JSON.stringify(result.data.fullChat))
+        box1.classList.remove('activate-block')
+        box2.classList.add('activate-block')
+        setGetChatData((prev) => !prev)
+      //  have to set loading => to open new group on screen
      } catch (error) {
       console.log('error in group submission',error)
      }
@@ -85,7 +93,7 @@ const CreateGroup = ({children}) => {
 </span>
 
 {/* modal */}
-<div className="modal fade" id="createGroupModal" tabIndex="-1" aria-labelledby="createGroupModalLabel" aria-hidden="true">
+<div className="modal fade" id="createGroupModal" tabIndex="-1" aria-labelledby="createGroupModalLabel" aria-hidden="true" style={{zIndex:"6000"}}>
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
@@ -94,10 +102,12 @@ const CreateGroup = ({children}) => {
       </div>
       <div className="modal-body">
          <div>
-            <input placeholder='Enter Group Name' value={groupName} onChange={(e)=>setGroupName(e.target.value)}  />
+           <span>Group Name : </span> 
+           <input className="m-1" placeholder='Enter Group Name' value={groupName} onChange={(e)=>setGroupName(e.target.value)}  />
          </div>
          <div>
-         <input placeholder='Search for friends' onChange={(e)=>handleSearch(e.target.value)}  />
+         <span> Add Members : </span> 
+         <input className="m-1" placeholder='Search for friends' onChange={(e)=>handleSearch(e.target.value)}  />
          </div>
          {/* selected users */}
          <div style={{display:'flex',flexWrap:'wrap'}}>

@@ -157,4 +157,91 @@ background: linear-gradient(80deg, rgba(2,0,36,1) 0%, rgba(0,150,136,1) 100%);
     scrollbar-width: none;  /* Firefox */
   }
 
-  
+  /* stylings for forgot page */
+
+  .forgot-page-container{
+    height:100vh;
+    background-color: #152238;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .reset-page-image{
+        height:40%;
+        margin: 5px;
+  }
+
+  .reset-page-image img{
+    height:100%;
+    width:100%;
+    object-fit: cover;
+  }
+
+  .reset-form{
+        height:40%;
+        display: flex;
+        flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+  }
+
+  .form-heading , .form-text{
+    color: #009688;
+  }
+
+  .submit-btn-div{
+    text-align: center;
+  }
+
+  .forgot-submit-btn{
+    background-color:#009688;
+  }
+
+  .forgot-submit-btn:hover{
+    background-color:#e0f2f1;
+  }
+
+  input:focus , input.form-control:focus{
+    /* outline: none; */
+    box-shadow: none;
+}
+
+  @media (min-width: 768px) { 
+     .reset-page-image , .reset-form{
+            height : 75%;
+     }
+   }
+
+   /* styling for reset password page */
+
+   .reset-password-container{
+    height:100vh;
+    background-color: #152238;
+    color:#009688;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+   }
+
+   .reset-img-container{
+     height:40%;
+     width:40%;
+     margin: 0 auto;
+   }
+
+   .reset-img-container img{
+    height:100%;
+    width:100%;
+    object-fit: cover;
+   }
+
+   .reset-password-form div{
+    text-align: center;
+   }

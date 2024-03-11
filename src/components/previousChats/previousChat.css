@@ -6,6 +6,7 @@
    .previous-chat-header{
     padding: 10px;
     /* height:10vh; */
+    height:15%;
    }
 
    #my-chat{
@@ -63,7 +64,10 @@ color: '#009688';
 
 .friends-list{
     overflow: auto;
-    height:70vh;
+    /* height:70vh; */
+    height:80%;
+    /* background-color: aquamarine; */
+    background-color: #e0f2f1;
     /* height:80%; */
 }
 

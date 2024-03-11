@@ -9,7 +9,7 @@ import ChatContext from "./components/context/ChatContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     
     <BrowserRouter>
     <ChatContext>
@@ -30,5 +30,5 @@ root.render(
       </ChatContext>
     </BrowserRouter>
     
-  </React.StrictMode>
+  // </React.StrictMode>
 );

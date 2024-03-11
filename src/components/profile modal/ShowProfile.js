@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import './profileSection.css'
 import { chatContext } from "../context/ChatContext";
-import { faCheck, faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPenToSquare, faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import {CircleLoader} from 'react-spinners'
@@ -9,13 +9,18 @@ import { SearchResult } from "../header/Offcanvas";
 // import SearchResultComponent from "../previousChats/SearchList";
 
 const ShowProfile = ({ children , setAllMsg }) => {
-  const {user, selectedChat, setSelectedChat , setGetChatData} = useContext(chatContext);
+  const {user, selectedChat, setSelectedChat , setGetChatData ,setChats} = useContext(chatContext);
   const[isEditable , setIsEditable] = useState(false);
   const[updateGroupName , setUpdateGroupName] = useState("");
   const[loading , setLoading] = useState(false);
   const[search , setSearch] = useState("");
   const[addMember , setAddMember] = useState(); // users found from search
-
+  const ScreenSize = "768";
+  const[screenWidth  , setScreenWidth] = useState();
+  const box1 = document.getElementById("box-1")
+  const box2 = document.getElementById("box-2")
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
+  
 
   async function editName(){
     try {
@@ -26,7 +31,7 @@ const ShowProfile = ({ children , setAllMsg }) => {
       }
       const result = await axios.put('http://localhost:5000/api/chat/group_rename',data , {
         headers : {
-          Authorization : `Bearer ${user.token}`
+          Authorization : `Bearer ${loggedUser.token}`
         }
       })
       setIsEditable(prev => !prev)
@@ -50,7 +55,7 @@ const ShowProfile = ({ children , setAllMsg }) => {
         `http://localhost:5000/api/user?search=${search}`,
         {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${loggedUser.token}`,
           },
         }
       );
@@ -76,7 +81,7 @@ const ShowProfile = ({ children , setAllMsg }) => {
 
         const result = await axios.put('http://localhost:5000/api/chat/group_add_member' , data , {
           headers : {
-            Authorization : `Bearer ${user.token}`
+            Authorization : `Bearer ${loggedUser.token}`
           }
         } )
         // console.log('after adding new member',result.data.groupChat)
@@ -92,11 +97,11 @@ const ShowProfile = ({ children , setAllMsg }) => {
   async function removeGroupMember (removeMember){
     try {
       if(selectedChat?.admin._id === removeMember._id){ // admin cant remove himself unless he tranfer the admin status
-        return alert('admin cannot remove himself')
+        return alert('admin cannot remove himself/herself')
       }
 
-      if( selectedChat?.admin._id !== user._id && user._id !== removeMember._id ){
-        return alert('only admin can remove group members')
+      if( selectedChat?.admin._id !== loggedUser._id && loggedUser._id !== removeMember._id ){
+        return alert('only admin can remove other group members')
       }
 
       const data = {
@@ -106,11 +111,14 @@ const ShowProfile = ({ children , setAllMsg }) => {
 
       const result = await axios.put('http://localhost:5000/api/chat/group_remove_member' , data , {
         headers : {
-          Authorization : `Bearer ${user.token}`
+          Authorization : `Bearer ${loggedUser.token}`
         }
       })
+      console.log("group id",selectedChat._id)
+      console.log("user id",removeMember._id)
       alert(`${removeMember.name} is removed from this group`)
       setSelectedChat(result.data.afterRemoved)
+      localStorage.setItem("selectedUser" , JSON.stringify(result.data.afterRemoved))
       getEntireChat(); // from current chat => load all msg
     } catch (error) {
       console.log('error in removing group member',error)
@@ -125,7 +133,7 @@ const ShowProfile = ({ children , setAllMsg }) => {
         try {
           const result = await axios.get(`http://localhost:5000/api/msg/${selectedChat._id}`,{
             headers : {
-              Authorization : `Bearer ${user.token}`
+              Authorization : `Bearer ${loggedUser.token}`
             }
           })
 
@@ -135,9 +143,47 @@ const ShowProfile = ({ children , setAllMsg }) => {
         }
     }
 
+    // delete entire group
+    async function deleteGroup(){
+
+      console.log("user" , user.token)
+      try {
+          // await axios.delete(`http://localhost:5000/api/chat/delete_group`,{data},{
+          //   headers : {
+          //     Authorization : `Bearer ${user.token}`
+          //   }
+          // })
+          await axios.delete(`http://localhost:5000/api/chat/delete_group/${selectedChat._id}`,{
+            headers : {
+              Authorization : `Bearer ${loggedUser.token}`
+            }
+          })
+          localStorage.removeItem("selectedUser")
+        // fetch chat
+        const myChat = await axios.get('http://localhost:5000/api/chat',{
+            headers:{
+                Authorization: `Bearer ${loggedUser.token}`
+            }
+           }) 
+            
+           setChats(myChat.data)
+           setSelectedChat("") // set loading component from the click of delete to emptying selected caht
+           box2.classList.remove('activate-block')
+           box1.classList.add('activate-block')
+           
+      } catch (error) {
+        console.log('error in deleting entire chat',error)
+      }
+    }
+
+function returnChatterData(usersArray){
+ return usersArray.filter((person) => person._id !== loggedUser._id) 
+}
+
   return (
-    <div className="d-inline-block">
+    <div className="d-inline-block" style={{zIndex:"6000"}}>
       {/* Button trigger modal */}
+      {/* {console.log("user list after deletion" , selectedChat)} */}
       <span
         type="button"
         className="btn"
@@ -172,14 +218,17 @@ const ShowProfile = ({ children , setAllMsg }) => {
             <div className="modal-body">
             <div className="profile-image-container">
               <span className="profile-area">
-               <img src={selectedChat.users[1].image} alt="profile" className="my-image" />
+               {/* <img src={selectedChat.users[1].image} alt="profile" className="my-image" /> */}
+               <img src={returnChatterData(selectedChat.users)[0].image} alt="profile" className="my-image" />
               </span>
             </div>
             <div>
-              <span>Name :</span> &nbsp; <span>{selectedChat.users[1].name}</span>
+              {/* <span>Name :</span> &nbsp; <span>{selectedChat.users[1].name}</span> */}
+              <span>Name :</span> &nbsp; <span>{returnChatterData(selectedChat.users)[0].name}</span>
             </div>
             <div>
-              <span>Email :</span>&nbsp; <span>{selectedChat.users[1].email}</span>
+              {/* <span>Email :</span>&nbsp; <span>{selectedChat.users[1].email}</span> */}
+              <span>Email :</span>&nbsp; <span>{returnChatterData(selectedChat.users)[0].email}</span>
             </div>
             </div>
             {/* <div className="modal-footer">
@@ -234,8 +283,10 @@ const ShowProfile = ({ children , setAllMsg }) => {
             </div> */}
             <div>
               <h3>Group members</h3>
-              <p>Total Group Members : {selectedChat.users.length
+              <p>Total Group Members : {selectedChat.users?.length
               }</p>
+             {selectedChat.admin?._id === loggedUser._id ? <div> <button className="btn btn-danger" data-bs-dismiss="modal" onClick={deleteGroup}>Delete group <span><FontAwesomeIcon icon={faTrash} /></span></button> </div>  : " " } 
+             
               {
                 selectedChat.users.map((member)=>{
                   return <div className="badge rounded-pill m-2 remove-badge" key={member._id} onClick={()=>removeGroupMember(member)} >{member.name} &nbsp; &nbsp;<span><FontAwesomeIcon icon={faXmark} /></span> </div> 
@@ -245,7 +296,7 @@ const ShowProfile = ({ children , setAllMsg }) => {
               {/* add new members */}
               {/* {console.log('🚀')} */}
               {
-                selectedChat?.admin?._id === user?._id ? 
+                selectedChat?.admin?._id === loggedUser?._id ? 
                 (<>
                 <div className="d-flex mb-3">
                 <input placeholder="search here" value={search} onChange={(e)=>setSearch(e.target.value)} /> &nbsp; &nbsp;

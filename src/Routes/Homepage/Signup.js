@@ -13,8 +13,10 @@ const Signup = () => {
   const[loading , setLoading] = useState(false);
   const[img , setImg] = useState();
   const [isDisabled , setIsDisabled] = useState(false);
-  const[imgUrl , setImgUrl] = useState(null);
+  // const[imgUrl , setImgUrl] = useState(null);
   const input_field = document.getElementById('profile_picture');
+  let imgUrl;
+
 
   // yup validation
   const signUpSchemaValidation = yup.object({
@@ -76,8 +78,10 @@ async function uploadImage(timestamp,signature){
      const res = await axios.post(url , data);
      const {secure_url} = res.data;
      console.log('bingooo..',secure_url)
-     setImgUrl(()=>secure_url)
+     imgUrl = res.data.secure_url;
+    //  setImgUrl((prev)=>secure_url)
      console.log('from destructure',imgUrl)
+     console.log("📷",img)
   } catch (error) {
       console.log('ERROR IN UPLOADING IMAGE',error)
       setIsDisabled((prev) => !prev)
@@ -86,10 +90,10 @@ async function uploadImage(timestamp,signature){
 }
 
 // get signature from server
-async function getSignature(folder){
+ async function getSignature(folder){
   try{
   // const res = await axios.post(`${process.env.BACKEND_URL}/sign-upload`,{folder});
-  const res = await axios.post(`http://localhost:5000/api/sign-upload`,{folder});
+  const res = await axios.post(`http://localhost:5000/api/user/sign-upload`,{folder});
   console.log('get sign data',res.data)
   return res.data
   } catch(error) {
@@ -101,11 +105,16 @@ async function getSignature(folder){
   // upload image in cloudinary 
 const handleImage = async(newuser) =>{
   try {
-      setLoading(true)
+    if(img){
+      setLoading(true)  // upload image in cloudinary 
       const {timestamp , signature} = await getSignature('images')
         console.log(timestamp,signature)
       await uploadImage(timestamp , signature);
       signUp(newuser)
+    } else {
+      signUp(newuser)
+    }
+      
   } catch (error) {
       console.log('error',error)
       toast.error('registration failed')
@@ -119,12 +128,14 @@ const handleImage = async(newuser) =>{
     // register user in DB
     async function signUp(user){
       try {
-        console.log('image link' , imgUrl)
-        await axios.post('http://localhost:5000/api/register-user',{
+        if(img){
+          console.log('image link' , imgUrl)
+        await axios.post('http://localhost:5000/api/user/register-user',{
           name:user.userName,
           email:user.email,
           password:user.password,
-          image:imgUrl
+          mobile:user.mobile,
+         image:imgUrl
         })
         .then(res => {
           toast(res.data.message);
@@ -144,6 +155,33 @@ const handleImage = async(newuser) =>{
         
         setLoading(false)
         setIsDisabled((prev) => !prev)
+        } else {
+          console.log('image link' , imgUrl)
+          await axios.post('http://localhost:5000/api/user/register-user',{
+            name:user.userName,
+            email:user.email,
+            password:user.password,
+            mobile:user.mobile,
+          })
+          .then(res => {
+            toast(res.data.message);
+            console.log(res.data.message);
+            values.userName = ''
+            values.email = ''
+            values.mobile = ''
+            values.password = ''
+            values.confirmPassword = ''
+            input_field.value="";
+            console.log('input field value',input_field.value)
+          })
+          .catch(err => {
+            console.log('err',err)
+            input_field.value="";
+          })
+          
+          setLoading(false)
+          setIsDisabled((prev) => !prev)
+        }
         
       } catch (error) {
         console.log(error)
@@ -155,6 +193,14 @@ const handleImage = async(newuser) =>{
       }
     }
    
+    function checkImageFormat(imgObject){
+        if(imgObject.type==="image/jpg" || imgObject.type==="image/jpeg"){
+          setImg(imgObject)
+        } else {
+          alert("Only jpg/jpeg image formats are allowed");
+          input_field.value="";
+        }
+    }
     
 
 
@@ -203,7 +249,7 @@ const handleImage = async(newuser) =>{
 
                         <div className='form-group mb-2'>
                           <label htmlFor="profile_picture">Profile Picture</label>
-                          <input type="file" className='form-control custom-input' accept="image/*" id="profile_picture" onChange={(e)=>setImg((prev)=>e.target.files[0])} alt='profile image' required />
+                          <input type="file" className='form-control custom-input' accept="image/jpeg , image/jpg" id="profile_picture" onChange={(e)=> checkImageFormat(e.target.files[0])} alt='profile image' required />
                         </div>
 
                         

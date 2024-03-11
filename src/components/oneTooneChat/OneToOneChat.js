@@ -12,6 +12,9 @@ const OneToOneChat = ({handleFunction , setAllMsg}) => {
     const {user , selectedChat  , setSelectedChat , getChatData , setGetChatData } = useContext(chatContext);
     const[switchBackButton , setSwitchBackButton] = useState(false);
     const ScreenSize = '768';
+    const box1 = document.getElementById("box-1")
+    const box2 = document.getElementById("box-2")
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
     // const[loading , setLoading] = useState(false);
     // const[fetchMsg , setFetchMsg] = useState([]);
     // const[newMsg , setNewMsg] = useState("");
@@ -32,21 +35,34 @@ const OneToOneChat = ({handleFunction , setAllMsg}) => {
     function updateScreenWidth(){
         setScreenWidth(window.outerWidth)
     }
+    function controlBackButton(){
+        if(screenWidth < ScreenSize){
+            setSwitchBackButton(true)
+            localStorage.removeItem("selectedUser");
+            setSelectedChat("")
+           }else{
+            setSwitchBackButton(false)
+           }
+    }
 
-    useEffect(()=>{
-       window.addEventListener('resize' , updateScreenWidth);
-       if(screenWidth < ScreenSize){
-        setSwitchBackButton(true)
-       }else{
-        setSwitchBackButton(false)
-       }
+    // useEffect(()=>{
+    //    window.addEventListener('resize' , updateScreenWidth);
+    //    controlBackButton()
 
-       return() => {
-         window.removeEventListener('resize' , updateScreenWidth)
-       }
+    //    return() => {
+    //      window.removeEventListener('resize' , updateScreenWidth)
+    //    }
 
-    },[screenWidth])
+    // },[screenWidth])
 
+    function removeSelectedChat(){
+        console.log("removed")
+        localStorage.removeItem("selectedUser");
+        setSelectedChat("")
+        box2.classList.remove('activate-block')
+        box1.classList.add('activate-block')
+        
+    }
     // send msg by pressing enter key
 //   async function sendMsg(e){
 //         if(e.key === "Enter" && newMsg){
@@ -84,13 +100,17 @@ const OneToOneChat = ({handleFunction , setAllMsg}) => {
         {selectedChat ? (
            
             <div className='p-1 current-chat-header d-flex justify-content-between align-items-center' >
-                {
+                {/* {
                     switchBackButton ? (<span className='go-back-btn' style={{cursor:'pointer'}} onClick={handleFunction}> <FontAwesomeIcon icon={faCircleChevronLeft} /> </span>) 
-                    : (<span className='go-back-btn' style={{cursor:'pointer'}} onClick={() => setSelectedChat("")}> <FontAwesomeIcon icon={faCircleArrowLeft} /> </span>)
-                }
+                    : (<span className='go-back-btn' style={{cursor:'pointer'}} onClick={removeSelectedChat}> <FontAwesomeIcon icon={faCircleArrowLeft} /> </span>)
+                } */}
+
+                
+                     <span className='go-back-btn' style={{cursor:'pointer'}} onClick={removeSelectedChat}> <FontAwesomeIcon icon={faCircleArrowLeft} /> </span>
+                
 
                 { 
-                    selectedChat.isGroupChat? <span className='chat-person-name'> {selectedChat.groupName} </span> : <span className='chat-person-name'> {getSenderName(user,selectedChat.users)} </span>
+                    selectedChat.isGroupChat? <span className='chat-person-name'> {selectedChat.groupName} </span> : <span className='chat-person-name'> {getSenderName(loggedInUser,selectedChat.users)} </span>
                 }
 
                 {!selectedChat.isGroupChat? (
@@ -110,18 +130,9 @@ const OneToOneChat = ({handleFunction , setAllMsg}) => {
             </div>          
         ) : (
             <div className='d-flex justify-content-center align-items-center' style={{height:'70vh'}}>
-                <p>click on a user to start chatting</p>
+                <p style={{color:"white"}}>click on a user to start chatting</p>
             </div>
         ) }
-
-        
-
-        
-
-
-
-        
-
     </div>
   )
 }

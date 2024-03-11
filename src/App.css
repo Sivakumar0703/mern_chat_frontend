@@ -8,16 +8,20 @@
 }
 
 
+.row{
+    --bs-gutter-x: 0rem !important;
+}
+
 /* one-one chat */
 .current-chat-header{
     height:50px;
-    background-color: brown;
+    background-color: #009688;
 }
 
 .chat-person-name {
     font-size: 25px;
     font-weight: bold;
-    color:yellow;
+    color:#152238;
 }
 
 .go-back-btn{

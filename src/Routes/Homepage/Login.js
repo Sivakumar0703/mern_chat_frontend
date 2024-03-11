@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "../../images/chat-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { chatContext } from "../../components/context/ChatContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [view, setView] = useState(false);
   const navigate = useNavigate();
+  const {setUserLoading} = useContext(chatContext)
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if(user){
-      navigate('/chat')
-    }
-  },[navigate])
+  // useEffect(() => {
+  //   const user = JSON.parse(localStorage.getItem("user"));
+  //   if(user){
+  //     navigate('/chat')
+  //   }
+  // },[navigate])
 
   const handleClick = () => {
     setView((prev) => !prev);
@@ -32,14 +34,18 @@ const Login = () => {
       };
        await axios.post("http://localhost:5000/api/user/login", data)
         .then((res) => {
-          toast(res.data.message);
+          toast(res.data?.message);
           // setEmail("")
           // setPassword("")
+          console.log('local storage',res.data.userObj)
           localStorage.setItem("user",JSON.stringify(res.data.userObj));
+          setUserLoading(true)
           console.log(res.data)
+          navigate('/chat')
         });
     } catch (error) {
-      console.log("error", error);
+      toast(error.response?.data?.Message)
+      console.log("error", error.response?.data?.Message);
     }
   }
 
@@ -91,7 +97,7 @@ const Login = () => {
       </div>
 
       <div className="form-group p-2">
-        <a href="#" style={{ textDecoration: "none" }}>
+        <a href="#" style={{ textDecoration: "none" }} onClick={()=>navigate('/forgot_password')}>
           forgot password ?
         </a>
       </div>

@@ -24,7 +24,7 @@
   const SearchResultComponent = ({user , handleFunction}) => {
     // console.log('handle chat fn from add user',handleFunction)
       return(
-              <div className='card mb-2' onClick={handleFunction} style={{cursor: 'pointer'}}>
+              <div className='card mb-2 p-1' onClick={handleFunction} style={{cursor: 'pointer'}}>
                   <div className='card-body row'>
                       <div className="profile-name col">
                         <div className="user-name"> {user.name} </div>

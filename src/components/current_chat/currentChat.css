@@ -1,7 +1,11 @@
 .inside-chat-area{
     height:calc(100vh - 10vh - 21px);
-    /* background-color: blue; */
+    background-color: #009688;
     position: relative;
+    border-radius: 8px;
+    border-left:5px solid white;
+    border-top:5px solid white;
+    border-right:5px solid white;
 }
 
  /* .chat-display{
@@ -11,14 +15,15 @@
  } */
 
  .chat-input{
-    position:absolute;
-    bottom: 0;
-    margin: 10px;
+    /* position:absolute; */
+    /* bottom: 0; */
+    /* margin: 10px; */
     /* background-color: darkgreen; */
     width:96%;
+    margin: 3px;
  }
 
- .chat-input input{
+ .chat-input  input{
     width:95%;
     padding:7px;
     border-radius: 8px;
@@ -26,16 +31,24 @@
 
  .chat-input{
     display: flex;
-    justify-content: center;
+    justify-content:flex-start;
+    align-items: center;
  }
 
+ /* .header-chatArea{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+ } */
+
  .chat-display{
-    background-color: yellowgreen;
+    background-color:  #152238;
     overflow-y: scroll;
-    /* min-height:60vh; */
-    height:calc(100vh - 10vh - 125px);
+    /* min-height:60vh; 125 */
+    height:calc(100vh - 10vh - 149px);
     padding:15px;
-    border-radius: 8px;
+   
 
     /* display:flex;
     flex-direction: column;
@@ -43,9 +56,20 @@
     scrollbar-width: none; */
  }
 
+ /* Hide scrollbar for Chrome, Safari, and Opera */
+.chat-display::-webkit-scrollbar {
+   display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.chat-display {
+   -ms-overflow-style: none; /* IE and Edge */
+   scrollbar-width: none; /* Firefox */
+}
+
  .text-and-display{
     /* height:calc(100vh - 10vh - 72px); */
-    background-color: darkgoldenrod;
+    background-color: #152238;
     border-radius: 8px;
  }
 
@@ -54,3 +78,31 @@
    color:palevioletred;
  }
 
+ .send-media-icon{
+   cursor: pointer;
+   font-size: 35px;
+   margin-left: 3px;
+   color:"#009688"
+ }
+
+ /* @media (min-width:768px){
+   .send-media-icon{
+      font-size: 35px;
+   }
+ } */
+
+ @media (min-width: 768px) { 
+   .displayMediaFile{
+      width:250px;
+   }
+  }
+
+ .displayMediaFile img{
+   width:100%;
+   height:100%;
+   object-fit: cover;
+ }
+
+ /* .download-btn{
+   display: none;
+ } */

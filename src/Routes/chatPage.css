@@ -2,25 +2,30 @@
 /* #my-chat  #chat-box */
 
 .chat-body{
-    background-color: hotpink;
+    /* background-color: red; */
     /* height:90vh; */
     margin: 10px;
     height:calc(100vh - 10vh - 20px);
 }
 
 .my-chats{
-    background-color: burlywood;
+    background-color: #009688;
     display: none;
     border-radius: 8px;
+    height:100%; 
+    /* new changes in height */
 }
 
 
 .chat-box{
-    background-color: cadetblue;
+    /* background-color: #152238; */
     display: none;
     /* changes */
     /* gap:'10px'; */
     /* margin: 15px; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
 }
 
 #back-button{
@@ -41,4 +46,13 @@
 
  .activate-block{
     display: block;
+ }
+
+ .remove-default{
+    --bs-gutter-x: 0rem !important;
+        background-image: url(../images/chat_login_bg.jpg);
+        object-fit: cover; 
+        height:100vh;
+
+    
  }

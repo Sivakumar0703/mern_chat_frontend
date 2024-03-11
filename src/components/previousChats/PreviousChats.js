@@ -19,7 +19,7 @@ const PreviousChats = ({box1,box2}) => {
             
            const myChat = await axios.get('http://localhost:5000/api/chat',{
             headers:{
-                Authorization: `Bearer ${loggedInUser.token}`
+                Authorization: `Bearer ${loggedInUser?.token}`
             }
            }) 
             
@@ -43,17 +43,22 @@ const PreviousChats = ({box1,box2}) => {
             fetchChats()
     },[getChatData])
 
-    function switchToChat() {
+    function switchToChat(selectedUser) {
         box1.classList.remove('activate-block')
         box2.classList.add('activate-block')
+        if(localStorage.getItem('selectedUser')){
+            localStorage.setItem('selectedUser',JSON.stringify(selectedUser));
+        } else {
+            localStorage.setItem('selectedUser',JSON.stringify(selectedUser));
+        }
     }
 
   return (
     // <div className='container-fluid'>
 <>
-<div className='row'>
+{/* <div className='row'> */}
 {/* <div className='chat-container' style={{display : selectedChat ? "none" : "flex"}}> */}
-<div className='chat-container col'>
+{/* <div className='chat-container col'> */}
 
     {/* header section */}
     <div className='previous-chat-header row'>
@@ -62,7 +67,7 @@ const PreviousChats = ({box1,box2}) => {
         </div>
         <div className='col' id="create-group"> 
         <CreateGroup>
-        <button className='btn btn-primary'>create group <FontAwesomeIcon icon={faPlus} />  </button>
+        <button className='btn' data-toggle="tooltip" data-placement="bottom" title="Create New Group">  <FontAwesomeIcon icon={faPlus} /> </button>
         </CreateGroup>
         </div>
     </div>
@@ -73,14 +78,14 @@ const PreviousChats = ({box1,box2}) => {
         <div className='col'>
             {/* {console.log('chat to render frnd list' , chats)} */}
             {
-                chats ? (
+                chats.length !== 0 ? (
                     chats.map((cht)=>{
                         // console.log('what i get' , cht)
                       return  <div 
                       key={cht._id}
                       onClick={()=>{
                         setSelectedChat(cht);
-                        switchToChat()
+                        switchToChat(cht)
                     }} // picking particular user
                       className='previous-chat-list'
                       >
@@ -88,7 +93,7 @@ const PreviousChats = ({box1,box2}) => {
                         <div className='my-chat-list'>
                         <div className='my-friends-profile'> 
                         <span className='my-friends-img-conatiner'> 
-                        <img src={cht.users[1].image}  alt="profile-picture" />
+                        <img src={cht.users.filter((person) => person._id !== loggedInUser._id)[0].image}  alt="profile-picture" />
                          </span>
                           </div>
                         <p style={{display:'inline-block',color:'#009688'}}>{!cht.isGroupChat ? (getSenderName(loggedInUser , cht.users)) : cht.groupName}</p> {/* cht.chatLabel */}
@@ -96,14 +101,14 @@ const PreviousChats = ({box1,box2}) => {
 
                         </div>
                     })
-                ) : 'no chat available'
+                ) : <p style={{color:"black",textAlign:"center"}}>No Chat Available</p>
             }
         </div>
 
     </div>
 
-</div>
-</div>
+{/* </div> */}
+ {/* </div> */}
   
 
 </>

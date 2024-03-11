@@ -2,6 +2,7 @@
 import axios from "axios"
 import { useContext } from "react"
 import { chatContext } from "../context/ChatContext"
+import "./header.css"
 
 // chat loading
 const SkeletonLoading = () => {
@@ -22,7 +23,7 @@ const SkeletonLoading = () => {
 export const SearchResult = ({user , handleChat}) => {
   console.log('handle chat fn from offcanvas user',handleChat)
     return(
-            <div className='card mb-2' onClick={handleChat} style={{cursor: 'pointer'}}>
+            <div className='card mb-2' data-bs-dismiss="offcanvas" onClick={handleChat} style={{cursor: 'pointer'}}>
                 <div className='card-body-1 row'>
                     <div className='loadingRealImage col-4'> 
                     <span className='search-result-img-conatiner'>
@@ -49,14 +50,15 @@ const Offcanvas = ({nameList}) => {
          const chatData =  await axios.post('http://localhost:5000/api/chat', {userId:id} ,{
             headers:{
                 "Content-type":"application/json",
-                Authorization : `Bearer ${loggedInUser.token}`
+                Authorization : `Bearer ${user.token}`
             }
            })  
            if(!chats.find((cht)=> cht._id === chatData.data._id)){ // update chat with previous chat
                 setChats([chatData.data,...chats])
            }
+          //  setChats([chatData.data])
            setSelectedChat(chatData.data)
-          //  console.log('selected chat',selectedChat)
+            console.log('selected chat',selectedChat)
         } catch (error) {
             console.log('error in start chat function',error);
         }
